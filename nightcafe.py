@@ -1,4 +1,6 @@
 """
+new Env('nightcafe');
+nightcafe daily credits
 0 22 * * * nightcafe.py
 """
 import os
