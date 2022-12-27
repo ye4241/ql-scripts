@@ -13,5 +13,5 @@ if __name__ == '__main__':
         "accept-language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
         "x-auth-token": os.environ.get("NIGHTCAFE_TOKEN")
     }
-    response = requests.request("POST", url, headers=headers)
+    response = requests.request("POST", url, headers=headers, verify=False)
     print(response.json())
