@@ -9,6 +9,22 @@ import urllib3
 
 urllib3.disable_warnings()
 
+
+def get_daily_credits(email, password):
+    print(f'login user: {email}')
+    login = session.post(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD_bN4JwaaUIuYIOZ2cTvHrh0LRUYTXnfI',
+        json={'returnSecureToken': True, 'email': email, 'password': password}
+    ).json()
+    print(login)
+    print('get daily credits')
+    topup = session.post(
+        'https://us-central1-nightcafe-creator.cloudfunctions.net/api/credits/topup',
+        headers={'x-auth-token': login['idToken']}
+    ).json()
+    print(topup)
+
+
 if __name__ == '__main__':
     users = [token.split(';') for token in os.environ.get('NIGHTCAFE_TOKEN').split('&')]
 
@@ -20,15 +36,4 @@ if __name__ == '__main__':
     })
 
     for user in users:
-        print(f'login user: {user[0]}')
-        login = session.post(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD_bN4JwaaUIuYIOZ2cTvHrh0LRUYTXnfI',
-            json={'returnSecureToken': True, 'email': user[0], 'password': user[1]}
-        ).json()
-        print(login)
-        print('get daily credits')
-        topup = session.post(
-            'https://us-central1-nightcafe-creator.cloudfunctions.net/api/credits/topup',
-            headers={'x-auth-token': login['idToken']}
-        ).json()
-        print(topup)
+        get_daily_credits(user[0], user[1])
