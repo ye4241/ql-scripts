@@ -5,6 +5,9 @@ nightcafe daily credits
 """
 import os
 import requests
+import urllib3
+
+urllib3.disable_warnings()
 
 if __name__ == '__main__':
     url = "https://us-central1-nightcafe-creator.cloudfunctions.net/api/credits/topup"
