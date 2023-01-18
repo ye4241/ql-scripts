@@ -30,6 +30,9 @@ def attend(username, password):
     })
     if username in response.text:
         print('登录成功')
+    if '签到领魔力' not in response.text:
+        print('已签到')
+        return
     url = "https://www.pttime.org/attendance.php"
     response = session.request("GET", url)
     if '获得魔力值' in response.text:
