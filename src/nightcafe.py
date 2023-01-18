@@ -1,6 +1,6 @@
 '''
 new Env('nightcafe');
-0 22 * * * nightcafe.py
+5 8 * * * nightcafe.py
 '''
 import os
 import requests
