@@ -52,9 +52,8 @@ def get_daily_credits(session: requests.Session):
 def get_vote_daily_credits(session: requests.Session, user_id: str):
     print('get vote daily credits')
     count = 20
-    game = session.get(
-        'https://creator.nightcafe.studio/_next/data/1GRtkxQ0IkSk9uI4hvJm9/game/daily-challenge-vote.json?gameId=daily-challenge-vote').json()
-    game_id = game['pageProps']['__N_REDIRECT'].rstrip('?').split('/')[2]
+    resp = session.get('https://creator.nightcafe.studio/game/daily-challenge-vote', allow_redirects=True)
+    game_id = resp.url.split('/')[-1]
     print('game_id', game_id)
     game_page = session.get(
         f'https://us-central1-nightcafe-creator.cloudfunctions.net/api/challenge/{game_id}/entries/voting?page=1').json()
@@ -83,5 +82,5 @@ if __name__ == '__main__':
     for user in users:
         (session, user_id) = login(user[0], user[1])
         get_daily_credits(session)
-        get_connect_credits(session, user_id)
+        # get_connect_credits(session, user_id)
         get_vote_daily_credits(session, user_id)
