@@ -34,9 +34,13 @@ def user_checkin(session):
     print(response)
 
 
-if __name__ == '__main__':
+def main():
     users = [token for token in os.environ.get(ENV_KEY).split('&')]
     for user in users:
         session = login(user)
         get_current_user(session)
         user_checkin(session)
+
+
+if __name__ == '__main__':
+    main()

@@ -44,8 +44,11 @@ def sign(cookie):
     else:
         print('签到失败')
 
-
-if __name__ == '__main__':
+def main():
     cookies = os.environ.get(ENV_KEY).split('&')
     for cookie in cookies:
         sign(cookie)
+
+
+if __name__ == '__main__':
+    main()

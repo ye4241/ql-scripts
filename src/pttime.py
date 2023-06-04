@@ -38,8 +38,11 @@ def attend(username, password):
     if '获得魔力值' in response.text:
         print('签到成功')
 
-
-if __name__ == '__main__':
+def main():
     users = [token.split(';') for token in os.environ.get(ENV_KEY).split('&')]
     for user in users:
         attend(user[0], user[1])
+
+
+if __name__ == '__main__':
+    main()
