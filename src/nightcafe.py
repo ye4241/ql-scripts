@@ -16,6 +16,11 @@ ENV_KEY = 'NIGHTCAFE_TOKEN'
 
 def login(email, password):
     session = requests.Session()
+    proxy = os.environ.get('NIGHTCAFE_PROXY')
+    session.proxies = {
+        'http': proxy,
+        'https': proxy,
+    }
     session.verify = False
     session.headers.update({
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54',
@@ -77,10 +82,14 @@ def get_vote_daily_credits(session: requests.Session, user_id: str):
     print(claim)
 
 
-if __name__ == '__main__':
+def main():
     users = [token.split(';') for token in os.environ.get(ENV_KEY).split('&')]
     for user in users:
         (session, user_id) = login(user[0], user[1])
         get_daily_credits(session)
         # get_connect_credits(session, user_id)
         get_vote_daily_credits(session, user_id)
+
+
+if __name__ == '__main__':
+    main()
