@@ -62,6 +62,9 @@ def get_vote_daily_credits(session: requests.Session, user_id: str):
     print('game_id', game_id)
     game_page = session.get(
         f'https://us-central1-nightcafe-creator.cloudfunctions.net/api/challenge/{game_id}/entries/voting?page=1').json()
+    if 'entries' not in game_page:
+        print(game_page)
+        return
     entries = game_page['entries']
     for entry in entries[:count]:
         entry_id = entry['id']
