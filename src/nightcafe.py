@@ -41,7 +41,7 @@ def login(email, password):
 def get_connect_credits(session: requests.Session, user_id: str):
     print('get connect credits')
     result = session.post(
-        f'https://us-central1-nightcafe-creator.cloudfunctions.net/api/inboxMessage/user-{user_id}:message-userReceivedBadge-connectAnonymous:subject-connectAnonymous/action',
+        f'https://api.nightcafe.studio/inboxMessage/user-{user_id}:message-userReceivedBadge-connectAnonymous:subject-connectAnonymous/action',
     ).json()
     print(result)
 
@@ -49,7 +49,7 @@ def get_connect_credits(session: requests.Session, user_id: str):
 def get_daily_credits(session: requests.Session):
     print('get daily credits')
     result = session.post(
-        'https://us-central1-nightcafe-creator.cloudfunctions.net/api/credits/topup',
+        'https://api.nightcafe.studio/credits/topup',
     ).json()
     print(result)
 
@@ -61,7 +61,7 @@ def get_vote_daily_credits(session: requests.Session, user_id: str):
     game_id = resp.url.split('/')[-1]
     print('game_id', game_id)
     game_page = session.get(
-        f'https://us-central1-nightcafe-creator.cloudfunctions.net/api/challenge/{game_id}/entries/voting?page=1').json()
+        f'https://api.nightcafe.studio/challenge/{game_id}/entries/voting?page=1').json()
     if 'entries' not in game_page:
         print(game_page)
         return
@@ -71,7 +71,7 @@ def get_vote_daily_credits(session: requests.Session, user_id: str):
         rating = random.randint(1, 5)
         print('vote', entry_id, rating)
         vote = session.post(
-            f'https://us-central1-nightcafe-creator.cloudfunctions.net/api/challenge/{game_id}/entry/{entry_id}/vote',
+            f'https://api.nightcafe.studio/challenge/{game_id}/entry/{entry_id}/vote',
             json={
                 'voteKey': entry['voteKey'],
                 'rating': rating
@@ -79,10 +79,15 @@ def get_vote_daily_credits(session: requests.Session, user_id: str):
         print(vote['status'])
     time.sleep(1)
     claim = session.post(
-        f'https://us-central1-nightcafe-creator.cloudfunctions.net/api/inboxMessage/user-{user_id}:message-userReceivedBadge-dailyChallengeVoter:subject-dailyChallengeVoter:unique-1/action',
+        f'https://api.nightcafe.studio/inboxMessage/user-{user_id}:message-userReceivedBadge-dailyChallengeVoter:subject-dailyChallengeVoter:unique-1/action',
         json={}
     ).json()
     print(claim)
+    event = session.post(
+        'https://api.nightcafe.studio/ac-event',
+        json={'eventKey': 'eWU0MjQxQHFxLmNvbQ==', 'eventName': 'claimed_badge', 'eventData': 'dailyChallengeVoter'}
+    ).json()
+    print(event)
 
 
 def main():
